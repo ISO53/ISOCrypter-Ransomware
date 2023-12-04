@@ -5,6 +5,18 @@ public abstract class OS {
     public static final int WINDOWS = 0;
     public static final int LINUX = 1;
 
+    public static int getCurrentOS() {
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("win")) {
+            return OS.WINDOWS;
+        } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("mac")) {
+            return OS.LINUX;
+        } else {
+            return -1;
+        }
+    }
+
     public abstract static class Windows{
 
         private static final HashSet<String> EXCLUDED_FOLDERS = new HashSet<>();
