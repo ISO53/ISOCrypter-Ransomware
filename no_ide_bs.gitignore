@@ -15,7 +15,7 @@ HELP.md
 .sts4-cache/
 
 ### IntelliJ IDEA ###
-.idea/
+.idea/*
 .idea
 .out/
 *.iws/
