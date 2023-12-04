@@ -1,4 +1,4 @@
-package isocrypter_ransomware.src.main.java.com.iso53;
+package com.iso53;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
