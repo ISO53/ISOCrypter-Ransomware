@@ -1,3 +1,5 @@
+package isocrypter_ransomware.src.main.java.com.iso53;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

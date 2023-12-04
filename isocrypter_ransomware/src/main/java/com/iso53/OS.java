@@ -1,3 +1,5 @@
+package isocrypter_ransomware.src.main.java.com.iso53;
+
 import java.util.HashSet;
 
 public abstract class OS {
@@ -17,7 +19,7 @@ public abstract class OS {
         }
     }
 
-    public abstract static class Windows{
+    public abstract static class Windows {
 
         private static final HashSet<String> EXCLUDED_FOLDERS = new HashSet<>();
 
