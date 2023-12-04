@@ -16,6 +16,7 @@ HELP.md
 
 ### IntelliJ IDEA ###
 .idea/
+.idea
 .out/
 *.iws/
 *.iml/
