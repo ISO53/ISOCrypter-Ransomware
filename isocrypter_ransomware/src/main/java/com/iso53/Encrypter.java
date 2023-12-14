@@ -2,45 +2,36 @@ package com.iso53;
 
 import org.apache.commons.io.FilenameUtils;
 
+import javax.crypto.Cipher;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class Encrypter implements Runnable {
 
-    public static final int FILE = 0;
-    public static final int FOLDER = 1;
+    private static final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final Thread thread;
     private final Path path;
-    private final int flag;
 
-    public Encrypter(Path path, int flag) {
+    public Encrypter(Path path) {
         this.path = path;
         this.thread = new Thread(this);
-        this.flag = flag;
     }
 
     @Override
     public void run() {
-        switch (flag) {
-            case FILE: {
-                encryptFile(this.path);
-                break;
-            }
-            case FOLDER: {
-                encryptFolder(this.path);
-                break;
-            }
-            default: {
-                throw new IllegalStateException("Unexpected value: " + flag);
-            }
-        }
+        encryptFile();
     }
 
-    private void encryptFile(Path path) {
+    public void startEncryption() {
+        this.thread.start();
+    }
+
+    private void encryptFile() {
         // Read file content
         byte[] fileContent;
         try {
@@ -52,17 +43,15 @@ public class Encrypter implements Runnable {
 
         // Append the filename as a new line to EOF, so we can find the file name and
         // extension after decryption
-        String fileNameLine = path.getFileName().toString() + System.lineSeparator();
+        String fileNameLine = System.lineSeparator() + FilenameUtils.removeExtension(path.getFileName().toString());
         byte[] fileNameLineBytes = fileNameLine.getBytes();
         byte[] contentWithFileName = concatArray(fileContent, fileNameLineBytes);
 
         // Encrypt the file content
-        byte[] encryptedContent = EncryptionManager.encrypt(contentWithFileName, EncryptionManager.KEY);
+        byte[] encryptedContent = EncryptionManager.run(contentWithFileName, EncryptionManager.KEY, Cipher.ENCRYPT_MODE);
 
-        // Create encrypted file name with extension
-        byte[] fileName = FilenameUtils.removeExtension(path.getFileName().toString()).getBytes(StandardCharsets.UTF_8);
-        byte[] encryptedFileName = EncryptionManager.encrypt(fileName, EncryptionManager.KEY);
-        byte[] encryptedFileNameWithExtension = concatArray(encryptedFileName, ".encrypted".getBytes(StandardCharsets.UTF_8));
+        // Create random file name with extension
+        byte[] encryptedFileNameWithExtension = concatArray(generateRandomFileName(), ".encrypted".getBytes(StandardCharsets.UTF_8));
 
         // Save the encrypted content back to file
         try {
@@ -78,8 +67,17 @@ public class Encrypter implements Runnable {
         }
     }
 
-    private void encryptFolder(Path path) {
+    private byte[] generateRandomFileName() {
+        SecureRandom rand = new SecureRandom();
+        StringBuilder sb = new StringBuilder(128);
 
+        for (int i = 0; i < 128; i++) {
+            int randInt = rand.nextInt(ALLOWED_CHARACTERS.length());
+            char randChar = ALLOWED_CHARACTERS.charAt(randInt);
+            sb.append(randChar);
+        }
+
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     private byte[] concatArray(byte[] array1, byte[] array2) {
