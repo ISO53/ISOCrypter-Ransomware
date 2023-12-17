@@ -1,7 +1,6 @@
 package com.iso53;
 
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -12,9 +11,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
-public abstract class EncryptionManager {
+public abstract class CipherManager {
 
     public static final SecretKey KEY = generateSecretKey();
 
