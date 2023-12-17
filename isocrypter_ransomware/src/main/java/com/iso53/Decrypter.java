@@ -1,24 +1,23 @@
 package com.iso53;
 
-import org.apache.commons.io.FilenameUtils;
-
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.security.SecureRandom;
-import java.util.Arrays;
 
 public class Decrypter implements Runnable {
 
     private final Thread thread;
     private final Path path;
+    private final SecretKey key;
 
-    public Decrypter(Path path) {
+    public Decrypter(Path path, SecretKey key) {
         this.path = path;
         this.thread = new Thread(this);
+        this.key = key;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class Decrypter implements Runnable {
         }
 
         // Decrypt the file content
-        byte[] decryptedContent = EncryptionManager.run(fileContent, EncryptionManager.KEY, Cipher.DECRYPT_MODE);
+        byte[] decryptedContent = EncryptionManager.run(fileContent, key, Cipher.DECRYPT_MODE);
 
         // Get the original file name
         byte[] fileNameAsBytes = null;

