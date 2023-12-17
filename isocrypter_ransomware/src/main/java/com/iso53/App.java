@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashSet;
 
 class App {
@@ -110,7 +111,7 @@ class App {
 
             if (cmd.hasOption("decrypt")) {
                 String stringKey = cmd.getOptionValue("decrypt");
-                DECRYPTION_KEY = new SecretKeySpec(stringKey.getBytes(StandardCharsets.UTF_8), "AES");
+                DECRYPTION_KEY = new SecretKeySpec(Base64.getDecoder().decode(stringKey), "AES");
                 traverseAndDecrypt(new File(PATH).listFiles());
                 return;
             }
