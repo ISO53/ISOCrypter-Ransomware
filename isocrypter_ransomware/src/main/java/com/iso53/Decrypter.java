@@ -30,6 +30,11 @@ public class Decrypter implements Runnable {
     }
 
     private void decryptFile() {
+        // If the file is not an encrypted file, ignore it
+        if (!path.getFileName().toString().endsWith(".encrypted")) {
+            return;
+        }
+
         // Read file content
         byte[] fileContent;
         try {
@@ -40,27 +45,52 @@ public class Decrypter implements Runnable {
         }
 
         // Decrypt the file content
-        byte[] decryptedContent = EncryptionManager.run(fileContent, key, Cipher.DECRYPT_MODE);
+        byte[] decryptedContent = CipherManager.run(fileContent, key, Cipher.DECRYPT_MODE);
+
+        if (decryptedContent == null) {
+            System.out.println("This file couldn't be decrypted.");
+            return;
+        }
 
         // Get the original file name
-        byte[] fileNameAsBytes = null;
-        for (int i = fileContent.length - 1; i >= 0; i--) {
-            if (String.valueOf(fileContent[i]).equals(System.lineSeparator())) {
-                fileNameAsBytes = new byte[fileContent.length - i + 1];
-                System.arraycopy(fileContent, i + 1, fileNameAsBytes, 0, fileNameAsBytes.length);
+        int lastLineSeparatorIndex = -1;
+        byte[] lineSeparatorBytes = System.lineSeparator().getBytes(StandardCharsets.UTF_8);
+
+        for (int i = decryptedContent.length - lineSeparatorBytes.length; i >= 0; i--) {
+            boolean isLineSeparator = true;
+            for (int j = 0; j < lineSeparatorBytes.length; j++) {
+                if (decryptedContent[i + j] != lineSeparatorBytes[j]) {
+                    isLineSeparator = false;
+                    break;
+                }
+            }
+            if (isLineSeparator) {
+                lastLineSeparatorIndex = i;
                 break;
             }
         }
 
+        // Extract the last line
+        String fileNameAsStr = "";
+        if (lastLineSeparatorIndex != -1) {
+            int lineLength = decryptedContent.length - lastLineSeparatorIndex - lineSeparatorBytes.length;
+            byte[] lastLineBytes = new byte[lineLength];
+            System.arraycopy(decryptedContent, lastLineSeparatorIndex + lineSeparatorBytes.length, lastLineBytes, 0, lineLength);
+            fileNameAsStr = new String(lastLineBytes, StandardCharsets.UTF_8);
+
+            // Remove the last line from decryptedContent
+            byte[] newDecryptedContent = new byte[lastLineSeparatorIndex + lineSeparatorBytes.length];
+            System.arraycopy(decryptedContent, 0, newDecryptedContent, 0, lastLineSeparatorIndex + lineSeparatorBytes.length);
+            decryptedContent = newDecryptedContent;
+        }
+
         // Save the decrypted content back to file
         try {
-            if (decryptedContent != null) {
-                Files.write(path, decryptedContent);
+            Files.write(path, decryptedContent);
 
-                // Rename the file with decrypted file name
-                Path newPath = path.resolveSibling(new String(fileNameAsBytes, StandardCharsets.UTF_8));
-                Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
-            }
+            // Rename the file with decrypted file name
+            Path newPath = path.resolveSibling(fileNameAsStr);
+            Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
