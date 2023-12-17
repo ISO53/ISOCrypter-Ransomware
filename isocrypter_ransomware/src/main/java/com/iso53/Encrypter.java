@@ -43,12 +43,12 @@ public class Encrypter implements Runnable {
 
         // Append the filename as a new line to EOF, so we can find the file name and
         // extension after decryption
-        String fileNameLine = System.lineSeparator() + FilenameUtils.removeExtension(path.getFileName().toString());
+        String fileNameLine = System.lineSeparator() + path.getFileName().toString();
         byte[] fileNameLineBytes = fileNameLine.getBytes();
         byte[] contentWithFileName = concatArray(fileContent, fileNameLineBytes);
 
         // Encrypt the file content
-        byte[] encryptedContent = EncryptionManager.run(contentWithFileName, EncryptionManager.KEY, Cipher.ENCRYPT_MODE);
+        byte[] encryptedContent = CipherManager.run(contentWithFileName, CipherManager.KEY, Cipher.ENCRYPT_MODE);
 
         // Create random file name with extension
         byte[] encryptedFileNameWithExtension = concatArray(generateRandomFileName(), ".encrypted".getBytes(StandardCharsets.UTF_8));
