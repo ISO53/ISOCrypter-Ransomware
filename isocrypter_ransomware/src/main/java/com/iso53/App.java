@@ -4,6 +4,7 @@ import org.apache.commons.cli.*;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.security.auth.DestroyFailedException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 
@@ -122,11 +124,18 @@ class App {
             if (cmd.hasOption("encrypt")) {
                 traverseAndEncrypt(new File(PATH).listFiles());
                 createReadme();
+
+                // Clear the key from memory
+                assert CipherManager.KEY != null;
+                Arrays.fill(CipherManager.KEY.getEncoded(), (byte) 0);
+                CipherManager.KEY.destroy();
             }
         } catch (MissingArgumentException e) {
             System.out.println("Missing argument.");
         } catch (ParseException e) {
             System.out.println("Parsing error.");
+        } catch (DestroyFailedException e) {
+            System.out.println("Key destruction error.");
         }
     }
 
