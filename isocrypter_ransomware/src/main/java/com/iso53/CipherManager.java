@@ -23,7 +23,7 @@ public abstract class CipherManager {
             return cipher.doFinal(content);
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException
                  | NoSuchPaddingException e) {
-            e.printStackTrace();
+            System.out.println("Encryption/Decryption Error. " + e.getMessage() + "\n");
             return null;
         }
     }
@@ -40,7 +40,7 @@ public abstract class CipherManager {
 
             return sc;
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println("Key Generation Error. " + e.getMessage() + "\n");
         }
         return null;
     }
