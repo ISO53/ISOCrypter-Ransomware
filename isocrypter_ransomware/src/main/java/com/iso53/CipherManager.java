@@ -36,7 +36,7 @@ public abstract class CipherManager {
             SecretKey sc = keygen.generateKey();
 
             // get base64 encoded version of the key
-            System.out.printf("\n\nKEY: %s", Base64.getEncoder().encodeToString(sc.getEncoded()));
+            System.out.printf("\n\nKEY: %s\n", Base64.getEncoder().encodeToString(sc.getEncoded()));
 
             return sc;
         } catch (NoSuchAlgorithmException e) {
