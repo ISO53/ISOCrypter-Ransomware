@@ -63,7 +63,7 @@ java -jar target/isocrypter_ransomware-jar-with-dependencies.jar [options]
 ```
 
 > [!WARNING]
-> BE VERY CAREFUL WHEN RUNNING THIS PROGRAM ON YOUR LOCAL MACHINE. PROGRAM CURRENTLY PRINTS THE ENCRYPTION KEY TO THE TERMINAL, YOU CAN USE THAT FOR DECRYPTION. DO NOT, UNDER AND CIRCUMSTANCES USE THIS PROGRAM FOR MALICIOUS PURPOSES.
+> **BE CAREFUL**! This program carries the potential to encrypt all files on your local machine, rendering them irrecoverable. During execution, the encryption key will be displayed in the terminal. It is imperative to handle this information with utmost care, as it serves as the means for potential decryption in case of accidental execution. Under no circumstances should this program be employed for malicious purposes.
 
 ## Options
 * -h,&emsp;--help:&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prints help message.
