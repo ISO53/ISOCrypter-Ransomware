@@ -2,7 +2,7 @@
 
 ISOCrypter is a simple encryption application / ransomware written in Java for educational purposes. It allows users to encrypt and decrypt files using AES encryption.
 
-> **DISCLAIMER:**
+> [!CAUTION]
 >
 > This software, ISOCrypter, is intended for educational purposes only. The author is not responsible for any misuse or malicious use of this program. It is the user's responsibility to ensure that the program is
 > used ethically and in compliance with applicable laws and regulations. The author disclaims any liability for any damage or loss incurred through the misuse of this software. By using ISOCrypter, you agree that 
@@ -62,6 +62,7 @@ Run the application with the following command:
 java -jar target/isocrypter_ransomware-jar-with-dependencies.jar [options]
 ```
 
+> [!WARNING]
 > BE VERY CAREFUL WHEN RUNNING THIS PROGRAM ON YOUR LOCAL MACHINE. PROGRAM CURRENTLY PRINTS THE ENCRYPTION KEY TO THE TERMINAL, YOU CAN USE THAT FOR DECRYPTION. DO NOT, UNDER AND CIRCUMSTANCES USE THIS PROGRAM FOR MALICIOUS PURPOSES.
 
 ## Options
