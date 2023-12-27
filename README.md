@@ -56,8 +56,6 @@ ISOCrypter is designed to provide a basic understanding of file encryption and d
    mvn clean package
    ```
 
-</br>
-
 # Usage
 Run the application with the following command:
 ```bash
