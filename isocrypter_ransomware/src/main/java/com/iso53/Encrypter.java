@@ -61,7 +61,7 @@ public class Encrypter implements Runnable {
                 Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while encrypting the file.");
         }
     }
 

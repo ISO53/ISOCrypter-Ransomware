@@ -92,7 +92,7 @@ public class Decrypter implements Runnable {
             Path newPath = path.resolveSibling(fileNameAsStr);
             Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while decrypting the file.");
         }
     }
 }
