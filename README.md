@@ -2,7 +2,7 @@
 
 ISOCrypter is a simple encryption application / ransomware written in Java for educational purposes. It allows users to encrypt and decrypt files using AES encryption.
 
-> **Disclaimer:**
+> **DISCLAIMER:**
 >
 > This software, ISOCrypter, is intended for educational purposes only. The author is not responsible for any misuse or malicious use of this program. It is the user's responsibility to ensure that the program is
 > used ethically and in compliance with applicable laws and regulations. The author disclaims any liability for any damage or loss incurred through the misuse of this software. By using ISOCrypter, you agree that 
@@ -68,7 +68,7 @@ java -jar target/isocrypter_ransomware-jar-with-dependencies.jar [options]
 
 ## Options
 * -h,&emsp;--help:&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prints help message.
-* -p,&emsp;--path [path]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify the path for the program to run. If you don't use this argument the default path is the root path of the OS.
+* -p,&emsp;--path [path]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify the path for the program to run. The default is the root path of the OS.
 * -e,&emsp;--encrypt:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Encrypts all the files in the specified path.
 * -d,&emsp;--decrypt [key]:&nbsp;&nbsp;&nbsp;&nbsp;Decrypts all the files in the specified path with the provided key.
 
